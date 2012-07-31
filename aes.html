@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="./rollups/aes.js"></script>
+  <link rel="stylesheet" href="aes.css" />
+</head>
+<body>
+<h1>JSA Secure Local Encryptor</h1>
+<h2>What is this?</h2>
+<p>This wonderful thing is an implementation of CryptoJS (a local suite of
+secure hashing and cryptography functionality), which allows you to do
+fantastic stuff directly in javascript.  There is another notable site hosting
+this type of service (<a href="https://encipher.it/">Encypher.it</a>), but I
+don't trust people who I don't know with plaintext information to be encrypted,
+so I decided to just simply implement some HTML and JS that does it on my own
+server with my own SSL cert.  If you're here, I apparently like you, so feel
+free to use this resource to your heart's content.</p>
+<p>No matter what you do on this page, there should be no network activity
+after the initial load.  Go ahead - put your browser in offline mode and try
+it!<p>
+
+<h2>Example, dammit!</h2>
+OK, so using the form below I encrypted the following text:
+
+<p class="quote">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
+
+...with the genious password <b>manatee</b>.  I was able to decrypt this using openssl:
+
+<pre>
+<span class="prompt">hank@shelob</span> ~ $ openssl enc -aes-256-cbc -d -pass pass:manatee -base64
+U2FsdGVkX1/PaHRd+LhM1EvTPALdsjIA1c3WN1cPY7F03IyhHFPevL+XvdzVabL7
+NTc2hw9OldgPvJutm6WpwkuHsHTNKHZOo6bMQ2CKSrReegA/TXcLAJHYHPClDv5x
+CYJ+13OD8SOsuLazhQUO9YuWUgccGZcIrVkoTVrRZ+5V/12cq22h0h6ggoJ1c3ot
+issgDB2I+WxY6HaPCaIbik/ctm5h9lD5ctbSW+GuKvEs9gHOlX8wNkFXWl0djQHx
+NCbgFzIwl3yLSaZetkHc77RX2oq80fo44y1vngFl1HXnQvhdkoChv2BzOkrp8GXI
+Far far away, behind the word mountains, far from the countries Vokalia and
+Consonantia, there live the blind texts. Separated they live in Bookmarksgrove
+right at the coast of the Semantics, a large language ocean.
+<span class="prompt">hank@shelob</span> ~ $ 
+</pre>
+<h2>Use it!</h2>
+Enter some text in the <b>boxxxxx</b>: <br/>
+
+<img src="whatsintheboxxxx.jpg" /><br />
+<p>If you don't know what I'm referring to, <a href="http://youtu.be/1giVzxyoclE?t=2m2s">it's this</a>.<br />
+<script>
+function update_crypted()
+{
+    var p_elem = document.getElementById('plain');
+    var e_elem = document.getElementById('enc');
+    var pass = document.getElementById('pw');
+    var encrypted = CryptoJS.AES.encrypt(p_elem.value+"\n", pw.value);
+    e_elem.innerHTML = encrypted;
+}
+</script>
+<label>Plaintext:</label><br />
+<textarea cols="80" rows="24" id="plain" ></textarea><br />
+<label>Password (required):</label>
+<input type="text" size="50" id="pw" /><br />
+<input type="button" onClick="update_crypted();" value="Update" /><br />
+<label>Encrypted:</label>
+<pre id="enc"></pre>
+
+
+</body>

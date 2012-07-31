@@ -1,0 +1,16 @@
+pre {
+  padding: 10px;
+  background-color: #222;
+  color: white;
+}
+
+pre .prompt {
+  color: #393;
+}
+
+p.quote {
+  font-style: italic;
+  background-color: #eee;
+  color: #666;
+  width: 600px;
+}
