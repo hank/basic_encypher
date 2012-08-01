@@ -3,6 +3,8 @@
 <head>
   <script src="./rollups/aes.js"></script>
   <link rel="stylesheet" href="aes.css" />
+  <link href="./favicon.ico" rel="icon" type="image/x-icon" />
+  <title>JSA Secure Local Encryptor</title>
 </head>
 <body>
 <h1>JSA Secure Local Encryptor</h1>
@@ -29,7 +31,7 @@ ocean.</p>
 
 ...with the genious password <b>manatee</b>.  I was able to decrypt this using openssl:
 
-<pre>
+<pre class="term">
 <span class="prompt">hank@shelob</span> ~ $ openssl enc -aes-256-cbc -d -pass pass:manatee -base64
 U2FsdGVkX1/PaHRd+LhM1EvTPALdsjIA1c3WN1cPY7F03IyhHFPevL+XvdzVabL7
 NTc2hw9OldgPvJutm6WpwkuHsHTNKHZOo6bMQ2CKSrReegA/TXcLAJHYHPClDv5x
@@ -49,20 +51,45 @@ Enter some text in the <b>boxxxxx</b>: <br/>
 <script>
 function update_crypted()
 {
+    var error_elem = document.getElementById('error');
     var p_elem = document.getElementById('plain');
     var e_elem = document.getElementById('enc');
     var pass = document.getElementById('pw');
     var encrypted = CryptoJS.AES.encrypt(p_elem.value+"\n", pw.value);
+    error_elem.innerHTML = "";
     e_elem.innerHTML = encrypted;
+    document.getElementById('e_label').innerHTML = "Encrypted:";
+}
+
+function update_decrypted()
+{
+    var error_elem = document.getElementById('error');
+    var p_elem = document.getElementById('plain');
+    var e_elem = document.getElementById('enc');
+    var pass = document.getElementById('pw');
+    var decrypted = CryptoJS.AES.decrypt(p_elem.value, pw.value);
+    var d_string = decrypted.toString(CryptoJS.enc.Utf8);
+    if(d_string.length < 1) {
+        error_elem.innerHTML = "Error: invalid password";
+    }
+    else {
+        error_elem.innerHTML = "";
+        e_elem.innerHTML = d_string;
+        document.getElementById('e_label').innerHTML = "Decrypted:";
+    }
 }
 </script>
 <label>Plaintext:</label><br />
 <textarea cols="80" rows="24" id="plain" ></textarea><br />
 <label>Password (required):</label>
 <input type="text" size="50" id="pw" /><br />
-<input type="button" onClick="update_crypted();" value="Update" /><br />
-<label>Encrypted:</label>
+<input type="button" onClick="update_crypted();" value="Encrypt" />
+<input type="button" onClick="update_decrypted();" value="Decrypt" /><br />
+<label id="e_label">Encrypted:</label>
+<p id="error"></p>
 <pre id="enc"></pre>
 
+<h2>Want to Fork?  Maybe Spork?</h2>
+<a href="https://github.com/hank/basic_encypher">http://github.com/hank/basic_encypher</a>
 
 </body>
